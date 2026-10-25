@@ -11,10 +11,16 @@ def create_app():
     app.config.from_object(Config)
 
     # Make sure the "user" table exists before the app starts handling requests
-    init_db()
+    try:
+        init_db()
+    except Exception as e:
+        print(f"[app] Failed to set up the database: {e}")
 
     # Register the routes defined in routes.py
-    from app.routes import main_bp
-    app.register_blueprint(main_bp)
+    try:
+        from app.routes import main_bp
+        app.register_blueprint(main_bp)
+    except Exception as e:
+        print(f"[app] Failed to register routes: {e}")
 
     return app
