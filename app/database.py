@@ -1,11 +1,11 @@
 # Handles database connections and lead storage and retrieval.
 
 import sqlite3
-import os
 from datetime import datetime
+from config import Config
 
-# Path to the SQLite database file
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leads.db")
+# Path to the SQLite database file, read from config.py (which reads it from the environment)
+DB_PATH = Config.DATABASE_PATH
 
 
 def get_connection():
