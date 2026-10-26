@@ -19,3 +19,11 @@ class Config:
         "DATABASE_PATH",
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "leads.db")
     )
+
+    # Groq API key for the chatbot (Maviron Asistan). Set this on Render as
+    # an environment variable; never commit the real key to the repo.
+    GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+
+    # Groq model used for chat responses. llama-3.3-70b-versatile is a good
+    # free-tier default: fast and capable. Can be overridden via env var.
+    GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
