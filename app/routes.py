@@ -2,6 +2,7 @@
 
 from flask import Blueprint, request, jsonify
 from app.database import add_user, get_all_users, update_user_status
+from app.services.ai_service import get_chat_response, AIServiceError
 
 # All routes in this file are grouped under "main_bp"
 main_bp = Blueprint("main", __name__)
@@ -66,4 +67,30 @@ def change_status(user_id):
 
     except Exception as e:
         print(f"[routes] Failed to update status: {e}")
+        return jsonify({"success": False, "error": "Something went wrong"}), 500
+
+
+@main_bp.route("/api/chat", methods=["POST"])
+def chat():
+    """Receives a chatbot message from the Wix site (Maviron Asistan)
+    and returns the AI-generated reply."""
+    try:
+        data = request.get_json(silent=True) or {}
+
+        message = (data.get("message") or "").strip()
+        if not message:
+            return jsonify({"success": False, "error": "Message is required"}), 400
+
+        reply = get_chat_response(message)
+        return jsonify({"success": True, "reply": reply}), 200
+
+    except AIServiceError as e:
+        print(f"[routes] AI service error: {e}")
+        return jsonify({
+            "success": False,
+            "error": "Asistana su anda baglanamiyoruz, lutfen birazdan tekrar deneyin."
+        }), 503
+
+    except Exception as e:
+        print(f"[routes] Failed to handle chat message: {e}")
         return jsonify({"success": False, "error": "Something went wrong"}), 500
