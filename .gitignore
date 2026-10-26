@@ -1,0 +1,6 @@
+# Defines files and folders that Git should ignore.
+.env
+venv/
+__pycache__/
+*.pyc
+leads.db

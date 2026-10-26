@@ -1,0 +1,6 @@
+# Lists the Python dependencies required by the project.
+Flask
+flask-cors
+python-dotenv
+requests
+gunicorn
